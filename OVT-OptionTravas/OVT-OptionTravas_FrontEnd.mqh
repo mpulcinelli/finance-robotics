@@ -88,6 +88,8 @@ protected:
    void              OnChangeRadioGroup(void);
    void              OnChangeCheckGroup(void);
 
+   bool              LoadComboboxItems(string itm);
+
   };
   
 EVENT_MAP_BEGIN(OVTOptionTravasFrontEnd)
@@ -138,9 +140,9 @@ bool OVTOptionTravasFrontEnd::Create(const long chart,const string name,const in
    if(!CreateRadioGroup())
       return(false);
    if(!CreateCheckGroup())
-      return(false);
-   if(!CreateComboBox())
       return(false);*/
+   if(!CreateComboBox())
+      return(false);
 //--- succeed
    return(true);
   }
@@ -151,7 +153,10 @@ bool OVTOptionTravasFrontEnd::Create(const long chart,const string name,const in
    void OVTOptionTravasFrontEnd::OnChangeSpinEdit(void){}
    void OVTOptionTravasFrontEnd::OnChangeDate(void){}
    void OVTOptionTravasFrontEnd::OnChangeListView(void){}
-   void OVTOptionTravasFrontEnd::OnChangeComboBox(void){}
+   void OVTOptionTravasFrontEnd::OnChangeComboBox(void)
+   {
+      Print("Combo selecionada");
+   }
    void OVTOptionTravasFrontEnd::OnChangeRadioGroup(void){}
    void OVTOptionTravasFrontEnd::OnChangeCheckGroup(void){} 
    
@@ -190,3 +195,34 @@ bool OVTOptionTravasFrontEnd::CreateButton1(void)
 //--- succeed
    return(true);
   }
+  
+bool OVTOptionTravasFrontEnd::CreateComboBox(void)
+  {
+//--- coordinates
+   int x1=INDENT_LEFT;
+   int y1=INDENT_TOP+(EDIT_HEIGHT+CONTROLS_GAP_Y)+
+          (BUTTON_HEIGHT+CONTROLS_GAP_Y)+
+          (EDIT_HEIGHT+CONTROLS_GAP_Y);
+   int x2=x1+GROUP_WIDTH;
+   int y2=y1+EDIT_HEIGHT;
+//--- create
+   if(!m_combo_box.Create(m_chart_id,m_name+"ComboBox",m_subwin,x1,y1,x2,y2))
+      return(false);
+   if(!Add(m_combo_box))
+      return(false);
+//--- fill out with strings
+   //for(int i=0;i<16;i++)
+   //   if(!m_combo_box.ItemAdd("Item "+IntegerToString(i)))
+   //      return(false);
+//--- succeed
+   return(true);
+  }
+  
+  bool OVTOptionTravasFrontEnd::LoadComboboxItems(string itm)
+  {
+      if(!m_combo_box.ItemAdd(itm))
+         return(false);
+      
+      return(true);
+  }
+    
