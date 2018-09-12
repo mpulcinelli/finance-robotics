@@ -44,16 +44,10 @@ class OVTOptionTravasFrontEnd : public CAppDialog
   {
 private:
 
-   CEdit             m_edit;                          // the display field object
    CButton           m_button1;                       // the button object
-   CButton           m_button2;                       // the button object
-   CButton           m_button3;                       // the fixed button object
-   CSpinEdit         m_spin_edit;                     // the up-down object
-   CDatePicker       m_date;                          // the datepicker object
-   CListView         m_list_view;                     // the list object
-   CComboBox         m_combo_box;                     // the dropdown list object
-   CRadioGroup       m_radio_group;                   // the radio buttons group object
-   CCheckGroup       m_check_group;                   // the check box group object
+   CListView         m_list_view_opc_1;                     // the list object
+   CListView         m_list_view_opc_2;                     // the list object
+   CComboBox         m_combo_box_ativo;                     // the dropdown list object
 
 
 
@@ -67,41 +61,25 @@ public:
 
 protected:
    //--- create dependent controls
-   bool              CreateEdit(void);
    bool              CreateButton1(void);
-   bool              CreateButton2(void);
-   bool              CreateButton3(void);
-   bool              CreateSpinEdit(void);
-   bool              CreateDate(void);
-   bool              CreateListView(void);
+   bool              CreateListViewOpc1(void);
+   bool              CreateListViewOpc2(void);
    bool              CreateComboBox(void);
-   bool              CreateRadioGroup(void);
-   bool              CreateCheckGroup(void);
    //--- handlers of the dependent controls events
    void              OnClickButton1(void);
-   void              OnClickButton2(void);
-   void              OnClickButton3(void);
-   void              OnChangeSpinEdit(void);
-   void              OnChangeDate(void);
-   void              OnChangeListView(void);
+   void              OnChangeListViewOpc1(void);
+   void              OnChangeListViewOpc2(void);
    void              OnChangeComboBox(void);
-   void              OnChangeRadioGroup(void);
-   void              OnChangeCheckGroup(void);
 
-   bool              LoadComboboxItems(string itm);
+   bool              LoadListOp1_Items(string itm);
 
   };
   
 EVENT_MAP_BEGIN(OVTOptionTravasFrontEnd)
    ON_EVENT(ON_CLICK,m_button1,OnClickButton1)
-   ON_EVENT(ON_CLICK,m_button2,OnClickButton2)
-   ON_EVENT(ON_CLICK,m_button3,OnClickButton3)
-   ON_EVENT(ON_CHANGE,m_spin_edit,OnChangeSpinEdit)
-   ON_EVENT(ON_CHANGE,m_date,OnChangeDate)
-   ON_EVENT(ON_CHANGE,m_list_view,OnChangeListView)
-   ON_EVENT(ON_CHANGE,m_combo_box,OnChangeComboBox)
-   ON_EVENT(ON_CHANGE,m_radio_group,OnChangeRadioGroup)
-   ON_EVENT(ON_CHANGE,m_check_group,OnChangeCheckGroup)
+   ON_EVENT(ON_CHANGE,m_list_view_opc_1,OnChangeListViewOpc1)
+   ON_EVENT(ON_CHANGE,m_list_view_opc_2,OnChangeListViewOpc2)
+   ON_EVENT(ON_CHANGE,m_combo_box_ativo,OnChangeComboBox)
 EVENT_MAP_END(CAppDialog)  
   
   
@@ -123,18 +101,19 @@ bool OVTOptionTravasFrontEnd::Create(const long chart,const string name,const in
    if(!CAppDialog::Create(chart,name,subwin,x1,y1,x2,y2))
       return(false);
 //--- create dependent controls
-   if(!CreateEdit())
-      return(false);
    if(!CreateButton1())
       return(false);
+   if(!CreateListViewOpc1())
+      return(false);      
+      
+      
 /*   if(!CreateButton2())
       return(false);
    if(!CreateButton3())
       return(false);
    if(!CreateSpinEdit())
       return(false);
-   if(!CreateListView())
-      return(false);
+
    if(!CreateDate())
       return(false);
    if(!CreateRadioGroup())
@@ -148,35 +127,14 @@ bool OVTOptionTravasFrontEnd::Create(const long chart,const string name,const in
   }
   
    void OVTOptionTravasFrontEnd::OnClickButton1(void){}
-   void OVTOptionTravasFrontEnd::OnClickButton2(void){}
-   void OVTOptionTravasFrontEnd::OnClickButton3(void){}
-   void OVTOptionTravasFrontEnd::OnChangeSpinEdit(void){}
-   void OVTOptionTravasFrontEnd::OnChangeDate(void){}
-   void OVTOptionTravasFrontEnd::OnChangeListView(void){}
+   void OVTOptionTravasFrontEnd::OnChangeListViewOpc1(void){}
+   void OVTOptionTravasFrontEnd::OnChangeListViewOpc2(void){}
+
    void OVTOptionTravasFrontEnd::OnChangeComboBox(void)
    {
       Print("Combo selecionada");
    }
-   void OVTOptionTravasFrontEnd::OnChangeRadioGroup(void){}
-   void OVTOptionTravasFrontEnd::OnChangeCheckGroup(void){} 
    
-bool OVTOptionTravasFrontEnd::CreateEdit(void)
-  {
-//--- coordinates
-   int x1=INDENT_LEFT;
-   int y1=INDENT_TOP;
-   int x2=ClientAreaWidth()-INDENT_RIGHT;
-   int y2=y1+EDIT_HEIGHT;
-//--- create
-   if(!m_edit.Create(m_chart_id,m_name+"Edit",m_subwin,x1,y1,x2,y2))
-      return(false);
-   //if(!m_edit.ReadOnly(false))
-      //return(false);
-   if(!Add(m_edit))
-      return(false);
-//--- succeed
-   return(true);
-  }
 
 bool OVTOptionTravasFrontEnd::CreateButton1(void)
   {
@@ -206,21 +164,42 @@ bool OVTOptionTravasFrontEnd::CreateComboBox(void)
    int x2=x1+GROUP_WIDTH;
    int y2=y1+EDIT_HEIGHT;
 //--- create
-   if(!m_combo_box.Create(m_chart_id,m_name+"ComboBox",m_subwin,x1,y1,x2,y2))
+   if(!m_combo_box_ativo.Create(m_chart_id,m_name+"ComboBox",m_subwin,x1,y1,x2,y2))
       return(false);
-   if(!Add(m_combo_box))
+   if(!Add(m_combo_box_ativo))
       return(false);
-//--- fill out with strings
-   //for(int i=0;i<16;i++)
-   //   if(!m_combo_box.ItemAdd("Item "+IntegerToString(i)))
-   //      return(false);
+   m_combo_box_ativo.ItemAdd("PETR");
+   m_combo_box_ativo.ItemAdd("VALE");
 //--- succeed
    return(true);
   }
   
-  bool OVTOptionTravasFrontEnd::LoadComboboxItems(string itm)
+bool OVTOptionTravasFrontEnd::CreateListViewOpc1(void)
   {
-      if(!m_combo_box.ItemAdd(itm))
+//--- coordinates
+   int x1=INDENT_LEFT+GROUP_WIDTH+2*CONTROLS_GAP_X;
+   int y1=INDENT_TOP+(EDIT_HEIGHT+CONTROLS_GAP_Y)+
+          (BUTTON_HEIGHT+CONTROLS_GAP_Y)+
+          (EDIT_HEIGHT+2*CONTROLS_GAP_Y);
+   int x2=x1+GROUP_WIDTH;
+   int y2=y1+LIST_HEIGHT-CONTROLS_GAP_Y;
+//--- create
+   if(!m_list_view_opc_1.Create(m_chart_id,m_name+"ListView",m_subwin,x1,y1,x2,y2))
+      return(false);
+   if(!Add(m_list_view_opc_1))
+      return(false);
+//--- fill out with strings
+  // for(int i=0;i<16;i++)
+     // if(!m_list_view_opc_1.AddItem("Item "+IntegerToString(i)))
+     //    return(false);
+//--- succeed
+   return(true);
+  }  
+  
+  
+  bool OVTOptionTravasFrontEnd::LoadListOp1_Items(string itm)
+  {
+      if(!m_list_view_opc_1.ItemAdd(itm))
          return(false);
       
       return(true);
