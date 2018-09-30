@@ -80,3 +80,4 @@ void Base64Decode(string in,string &out)
       i++;
      }
   }
+
